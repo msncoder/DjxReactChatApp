@@ -1,0 +1,16 @@
+# Ignore Python virtual environment
+chatenv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django environment files
+*.env
+
+# React build and dependencies
+frontend/node_modules/
+frontend/dist/
+
+# System files
+.DS_Store
