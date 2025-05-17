@@ -1,0 +1,12 @@
+Redis Server start 
+redis-server.exe
+Redis Client (CLI)
+redis-cli.exe
+redis-cli.exe
+set key "saad"
+get key
+keys *
+ping
+shutdown
+redis-cli.exe shutdown
+

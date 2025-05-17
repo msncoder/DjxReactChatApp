@@ -14,3 +14,5 @@ frontend/dist/
 
 # System files
 .DS_Store
+
+dump.rdb
