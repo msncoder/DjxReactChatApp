@@ -14,10 +14,10 @@ class Room(models.Model):
     
 
 class Messages(models.Model):
-    room = models.ForeignKey(Room, related_name='messages',on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name='messages', on_delete=models.CASCADE)
     username = models.CharField(max_length=255)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    class meta:
-        ordering = ('Timestamp')
+    class Meta:
+        ordering = ('timestamp',)

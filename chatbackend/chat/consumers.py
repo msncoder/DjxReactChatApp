@@ -1,12 +1,12 @@
 import json
-from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
 from .models import Room, Messages
 
-class ChatCustomer(AsyncWebsocketConsumer):
+class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f'chat{self.room_name}'
+        self.room_group_name = f'chat_{self.room_name}'
 
         await self.get_or_create_room()
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -43,12 +43,12 @@ class ChatCustomer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_or_create_room(self):
-        return Room.objects.get_or_create(name=self.room_name)[0]
-    
+        return Room.objects.get_or_create(name=self.room_name)
+
     @database_sync_to_async
     def get_room(self, room_name):
         return Room.objects.get_or_create(name=room_name)[0]
-    
+
     @database_sync_to_async
-    def create_message(self, room, username, message):
-        return Messages.objects.create(room=room, username=username, message=message)
+    def create_message(self, room, username, content):
+        return Messages.objects.create(room=room, username=username, content=content)

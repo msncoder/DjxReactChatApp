@@ -9,10 +9,10 @@ export const useChat = (roomName, username) => {
   const messagesEndRef = useRef(null);
 
   const { sendMessage, lastMessage } = useWebSocket(
-    `ws://localhost:8000/ws/chat/${roomName}`,
+    `ws://localhost:8000/ws/chat/${roomName}/`,
     {
       shouldReconnect: () => true,
-      reconnectAttemps: 10,
+      reconnectAttempts: 10,
       reconnectInterval: 3000,
     }
   );
@@ -24,20 +24,21 @@ export const useChat = (roomName, username) => {
           `http://localhost:8000/api/rooms/${roomName}/messages/`
         );
         const data = await response.json();
-        setMessages(data); // ✅ ye sahi tarika hai
+        setMessages(data);
         setIsLoading(false);
       } catch (err) {
-        setError("Failed to load message");
+        setError("Failed to load messages");
         setIsLoading(false);
       }
     };
+
     fetchMessages();
   }, [roomName]);
 
   useEffect(() => {
     if (lastMessage !== null) {
       const data = JSON.parse(lastMessage.data);
-      setMessage((prev = [...prev, data]));
+      setMessages((prev) => [...prev, data]);
     }
   }, [lastMessage]);
 
@@ -48,13 +49,13 @@ export const useChat = (roomName, username) => {
   const sendChatMessage = useCallback(() => {
     if (message.trim()) {
       sendMessage(
-        json.stringyfy({
+        JSON.stringify({
           message,
           username,
           room_name: roomName,
         })
       );
-      setMessage();
+      setMessage("");
     }
   }, [message, username, roomName, sendMessage]);
 
